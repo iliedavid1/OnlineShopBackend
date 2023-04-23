@@ -1,7 +1,7 @@
 package com.store.backend.controller;
 
 import com.store.backend.model.User;
-import com.store.backend.service.UserServiceImpl;
+import com.store.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserServiceImpl service;
+    private UserService service;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
