@@ -34,5 +34,8 @@ public class ProductController {
     public String deleteProduct(@PathVariable String id) {
         return service.deleteProduct(id);
     }
+
+//    @PutMapping("/{id}")
+//    public Product changeRating(@PathVariable String id)
 }
 
