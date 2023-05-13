@@ -45,4 +45,8 @@ public class UserService {
         repository.deleteById(id);
         return "User " + id + " deleted!";
     }
+
+    public Boolean existsByEmail(String email) {
+        return repository.existsByEmail(email);
+    }
 }
