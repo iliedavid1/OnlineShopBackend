@@ -7,18 +7,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "user")
+@Document(collection = "order")
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode
 @NoArgsConstructor
-public class User {
+public class Order {
     @Id
     private String id;
-    private String name;
-    private String surname;
-    private String email;
-    private String password;
-    private UserRole userRole;
+    private String userId;
     private Cart cart;
+    private OrderStatus orderStatus;
 }
