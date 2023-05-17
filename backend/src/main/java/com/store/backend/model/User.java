@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "user")
 @Data
 @AllArgsConstructor
@@ -21,4 +23,6 @@ public class User {
     private String password;
     private UserRole userRole;
     private Cart cart;
+    private List<Product> favoriteProducts;
+    private List<Review> reviews;
 }

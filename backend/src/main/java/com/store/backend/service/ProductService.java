@@ -28,19 +28,6 @@ public class ProductService {
         return repository.findById(id).isEmpty() ? null : repository.findById(id).get();
     }
 
-    public Product updateRating(String id, Integer addRating) {
-        Product repoProduct = repository.findById(id).isEmpty() ? null :
-                repository.findById(id).get();
-
-        assert repoProduct != null;
-        Double rating = repoProduct.getRating() * repoProduct.getNrReview() + addRating;
-        repoProduct.setNrReview(repoProduct.getNrReview() + 1);
-        rating /= repoProduct.getNrReview();
-        repoProduct.setRating(rating);
-
-        return repository.save(repoProduct);
-    }
-
     public String deleteProduct(String id) {
         repository.deleteById(id);
         return "Product " + id + " deleted";
