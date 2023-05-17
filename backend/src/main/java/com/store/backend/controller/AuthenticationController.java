@@ -1,8 +1,10 @@
 package com.store.backend.controller;
 
 import com.store.backend.dtos.LoginDto;
+import com.store.backend.dtos.LoginResponseDto;
 import com.store.backend.dtos.RegisterDto;
 import com.store.backend.mapper.RegisterMapper;
+import com.store.backend.mapper.UserMapper;
 import com.store.backend.model.User;
 import com.store.backend.service.UserService;
 import jakarta.servlet.http.Cookie;
@@ -24,7 +26,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public @ResponseBody
-    ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         User user = userService.getUserByEmail(loginDto.getEmail());
         System.out.println(user);
         if (user == null)
@@ -41,7 +43,7 @@ public class AuthenticationController {
                 e.printStackTrace();
             }
 
-            return ResponseEntity.ok().body(loginDto);
+            return ResponseEntity.ok().body(UserMapper.mapUserToLoginDto(user));
         }
         
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
