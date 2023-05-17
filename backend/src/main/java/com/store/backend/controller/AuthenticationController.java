@@ -24,7 +24,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public @ResponseBody
-    ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         User user = userService.getUserByEmail(loginDto.getEmail());
         System.out.println(user);
         if (user == null)
@@ -41,7 +41,7 @@ public class AuthenticationController {
                 e.printStackTrace();
             }
 
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(loginDto);
         }
         
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -58,24 +58,30 @@ public class UserService {
 
     public Cookie genUserSessionCookie(User user) throws NoSuchAlgorithmException {
         String userid = user.getId();
+
         String signature = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256")
                 .digest((userid + pk).getBytes(StandardCharsets.UTF_8)));
+
         String payload = Base64.getEncoder().encodeToString((userid + "@" + signature)
                 .getBytes(StandardCharsets.UTF_8));
+
         return new Cookie("shopIPSessionID", payload);
 
     }
 
-    public User retrieveLoggedUser(String cookieValue) throws NoSuchAlgorithmException {
-        String payload = new String(Base64.getDecoder().decode(cookieValue), StandardCharsets.UTF_8);
-        String userid = payload.split("@")[0];
-        String signature = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256")
-                .digest((userid + pk).getBytes(StandardCharsets.UTF_8)));
-
-        if (signature.equals(payload.split("@")[1])) {
-            return getUserById(userid);
+    public User retrieveLoggedUser(String cookieValue) {
+        try {
+            String payload = new String(Base64.getDecoder().decode(cookieValue), StandardCharsets.UTF_8);
+            String userid = payload.split("@")[0];
+            String signature = null;
+            signature = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256")
+                    .digest((userid + pk).getBytes(StandardCharsets.UTF_8)));
+            if (signature.equals(payload.split("@")[1])) {
+                return getUserById(userid);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-
         return null;
     }
 }
