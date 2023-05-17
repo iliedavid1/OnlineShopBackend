@@ -45,4 +45,14 @@ public class UserController {
     public String deleteUser(@PathVariable String id) {
         return service.deleteUser(id);
     }
+
+    @PostMapping("/favorites/add")
+    public User addFavoriteProduct(@RequestBody String userId, @RequestBody String productId) {
+        return service.addFavoriteProduct(userId, productId);
+    }
+
+    @PostMapping("/favorites/remove")
+    public User removeFavoriteProduct(@RequestBody String userId, @RequestBody String productId) {
+        return service.removeFavoriteProduct(userId, productId);
+    }
 }

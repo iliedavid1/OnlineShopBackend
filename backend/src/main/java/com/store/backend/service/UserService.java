@@ -1,6 +1,8 @@
 package com.store.backend.service;
 
+import com.store.backend.model.Product;
 import com.store.backend.model.User;
+import com.store.backend.repository.ProductRepository;
 import com.store.backend.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
 
     public User addUser(User user) {
@@ -83,5 +88,29 @@ public class UserService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public User addFavoriteProduct(String userId, String productId) {
+        User user = repository.findById(userId).isEmpty() ? null :
+                repository.findById(userId).get();
+
+        Product favoriteProduct = productRepository.findById(productId).isEmpty() ? null :
+                productRepository.findById(productId).get();
+
+        user.getFavoriteProducts().add(favoriteProduct);
+
+        return repository.save(user);
+    }
+
+    public User removeFavoriteProduct(String userId, String productId) {
+        User user = repository.findById(userId).isEmpty() ? null :
+                repository.findById(userId).get();
+
+        Product favoriteProduct = productRepository.findById(productId).isEmpty() ? null :
+                productRepository.findById(productId).get();
+
+        user.getFavoriteProducts().remove(favoriteProduct);
+
+        return repository.save(user);
     }
 }
