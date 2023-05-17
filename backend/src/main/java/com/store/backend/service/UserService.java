@@ -2,14 +2,20 @@ package com.store.backend.service;
 
 import com.store.backend.model.User;
 import com.store.backend.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService {
+    public static final String pk = "qsdfghjiuyuaw";
 
     @Autowired
     private UserRepository repository;
@@ -48,5 +54,28 @@ public class UserService {
 
     public Boolean existsByEmail(String email) {
         return repository.existsByEmail(email);
+    }
+
+    public Cookie genUserSessionCookie(User user) throws NoSuchAlgorithmException {
+        String userid = user.getId();
+        String signature = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256")
+                .digest((userid + pk).getBytes(StandardCharsets.UTF_8)));
+        String payload = Base64.getEncoder().encodeToString((userid + "@" + signature)
+                .getBytes(StandardCharsets.UTF_8));
+        return new Cookie("shopIPSessionID", payload);
+
+    }
+
+    public User retrieveLoggedUser(String cookieValue) throws NoSuchAlgorithmException {
+        String payload = new String(Base64.getDecoder().decode(cookieValue), StandardCharsets.UTF_8);
+        String userid = payload.split("@")[0];
+        String signature = Base64.getEncoder().encodeToString(MessageDigest.getInstance("SHA-256")
+                .digest((userid + pk).getBytes(StandardCharsets.UTF_8)));
+
+        if (signature.equals(payload.split("@")[1])) {
+            return getUserById(userid);
+        }
+
+        return null;
     }
 }
