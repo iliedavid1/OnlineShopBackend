@@ -24,8 +24,9 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public @ResponseBody
-    ResponseEntity<LoginDto> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
+    ResponseEntity<User> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
         User user = userService.getUserByEmail(loginDto.getEmail());
+        System.out.println(loginDto.getEmail());
         System.out.println(user);
         if (user == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -41,7 +42,7 @@ public class AuthenticationController {
                 e.printStackTrace();
             }
 
-            return ResponseEntity.ok().body(loginDto);
+            return ResponseEntity.ok().body(user);
         }
         
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -49,14 +50,14 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public @ResponseBody
-    String register(@RequestBody RegisterDto RegisterDto) {
+    User register(@RequestBody RegisterDto RegisterDto) {
         User user = RegisterMapper.mapRegisterDtoToUser(RegisterDto);
 
         if (userService.existsByEmail(user.getEmail())) {
-            return "User already exists!";
+            return user;
         }
 
         userService.addUser(user);
-        return "User registered!";
+        return user;
     }
 }

@@ -4,13 +4,19 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 @AllArgsConstructor
 @EqualsAndHashCode
-@NoArgsConstructor
-public class Cart {
+@Getter
+@Setter
+public class Cart implements Serializable {
     private HashMap<String ,CartProduct> cartProducts;
+
+    public Cart() {
+        this.cartProducts = new HashMap<>();
+    }
 
     public void deleteProductsFromCart() {
         this.cartProducts.clear();

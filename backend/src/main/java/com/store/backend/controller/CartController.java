@@ -23,8 +23,9 @@ public class CartController {
     private OrderService orderService;
 
     @PutMapping("/add")
-    public Cart addProductToCart(@RequestBody String userID, @RequestBody String productID, @RequestBody Integer quantity) {
-        return service.addProductToCart(userID, productID, quantity);
+    public void addProductToCart(@RequestBody String userID, @RequestBody String productID, @RequestBody Integer quantity) {
+        System.out.println("userID: " + userID + ", productID: " + productID + ", quantity: " + quantity);
+        service.addProductToCart(userID, productID, quantity);
     }
 
     @PutMapping("/remove")
