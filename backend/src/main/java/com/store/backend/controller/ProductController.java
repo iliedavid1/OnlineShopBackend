@@ -28,9 +28,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts(@CookieValue("shopIPSessionID") String cookiePayload) {
-        User user = userService.retrieveLoggedUser(cookiePayload);
-        if (user == null) ;
+    public List<Product> getProducts() {
+//        User user = userService.retrieveLoggedUser(cookiePayload);
+//        if (user == null) ;
         return service.findAllProducts();
     }
 

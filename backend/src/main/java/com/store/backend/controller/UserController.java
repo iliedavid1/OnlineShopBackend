@@ -1,5 +1,6 @@
 package com.store.backend.controller;
 
+import com.store.backend.dtos.FavoriteDto;
 import com.store.backend.model.User;
 import com.store.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,12 @@ public class UserController {
     }
 
     @PostMapping("/favorites/add")
-    public User addFavoriteProduct(@RequestBody String userId, @RequestBody String productId) {
-        return service.addFavoriteProduct(userId, productId);
+    public void addFavoriteProduct(@RequestBody FavoriteDto favoriteDto) {
+        service.addFavoriteProduct(favoriteDto.getUserId(), favoriteDto.getProductId());
     }
 
     @PostMapping("/favorites/remove")
-    public User removeFavoriteProduct(@RequestBody String userId, @RequestBody String productId) {
-        return service.removeFavoriteProduct(userId, productId);
+    public void removeFavoriteProduct(@RequestBody FavoriteDto favoriteDto) {
+        service.removeFavoriteProduct(favoriteDto.getUserId(), favoriteDto.getProductId());
     }
 }

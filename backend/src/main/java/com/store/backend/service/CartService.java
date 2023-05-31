@@ -2,6 +2,7 @@ package com.store.backend.service;
 
 import com.store.backend.model.Cart;
 import com.store.backend.model.Product;
+import com.store.backend.model.User;
 import com.store.backend.repository.ProductRepository;
 import com.store.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +23,25 @@ public class CartService {
     }
 
     public void deleteProductsFromCart(String id) {
-        Cart cart = repository.findById(id).get().getCart();
+        User user = repository.findById(id).get();
+        Cart cart = user.getCart();
         cart.deleteProductsFromCart();
+        repository.save(user);
     }
 
-    public Cart addProductToCart(String id, String product, Integer quantity) {
-        Cart cart = repository.findById(id).get().getCart();
+    public void addProductToCart(String id, String product, Integer quantity) {
+        User user = repository.findById(id).get();
+        Cart cart = user.getCart();
         Product product1 = productRepository.findById(product).get();
         cart.addProductToCart(product, quantity, product1.getPrice(), product1.getTitle());
-        return cart;
+        repository.save(user);
     }
 
-    public Cart removeProductFromCart(String id, String productId, Integer quantity) {
-        Cart cart = repository.findById(id).get().getCart();
+    public void removeProductFromCart(String id, String productId, Integer quantity) {
+        User user = repository.findById(id).get();
+        Cart cart = user.getCart();
         Product product1 = productRepository.findById(productId).get();
         cart.removeProductFromCart(productId, quantity, product1.getPrice(), product1.getTitle());
-        return cart;
+        repository.save(user);
     }
 }

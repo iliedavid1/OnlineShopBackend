@@ -1,15 +1,10 @@
 package com.store.backend.controller;
 
-import com.store.backend.model.Cart;
+import com.store.backend.dtos.CartDto;
 import com.store.backend.model.Order;
-import com.store.backend.model.Product;
-import com.store.backend.model.User;
 import com.store.backend.service.CartService;
 import com.store.backend.service.OrderService;
-import com.store.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,19 +18,21 @@ public class CartController {
     private OrderService orderService;
 
     @PutMapping("/add")
-    public void addProductToCart(@RequestBody String userID, @RequestBody String productID, @RequestBody Integer quantity) {
-        System.out.println("userID: " + userID + ", productID: " + productID + ", quantity: " + quantity);
-        service.addProductToCart(userID, productID, quantity);
+    public void addProductToCart(@RequestBody CartDto cartDto) {
+        System.out.println("userID: " + cartDto.getUserId() + ", productID: " + cartDto.getProductId() + ", quantity: " + cartDto.getQuantity());
+        service.addProductToCart(cartDto.getUserId(), cartDto.getProductId(), cartDto.getQuantity());
     }
 
     @PutMapping("/remove")
-    public Cart removeProductFromCart(@RequestBody String userID, @RequestBody String productID, @RequestBody Integer quantity) {
-        return service.removeProductFromCart(userID, productID, quantity);
+    public void removeProductFromCart(@RequestBody CartDto cartDto) {
+        service.removeProductFromCart(cartDto.getUserId(), cartDto.getProductId(), cartDto.getQuantity());
     }
 
-    @PostMapping("/placeOrder/{id}")
-    public void placeOrder(@RequestBody String id, @RequestBody Order order) {
-        service.deleteProductsFromCart(id);
-        orderService.placeOrder(order);
+    @PostMapping("/placeOrder")
+    public String placeOrder(@RequestBody Order order) {
+        System.out.println("order: " + order);
+        String ret = orderService.placeOrder(order);
+        service.deleteProductsFromCart(order.getUserId());
+        return ret;
     }
 }

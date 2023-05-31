@@ -36,7 +36,7 @@ public class ReviewService {
         assert user != null;
 
         Product reviewedProduct = productRepository.findById(productId).isEmpty() ? null :
-                productRepository.findById(userId).get();
+                productRepository.findById(productId).get();
         assert  reviewedProduct != null;
 
         user.getReviews().add(new Review(reviewedProduct.getId(), rating));

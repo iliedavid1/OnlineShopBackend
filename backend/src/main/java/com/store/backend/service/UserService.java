@@ -97,6 +97,10 @@ public class UserService {
         Product favoriteProduct = productRepository.findById(productId).isEmpty() ? null :
                 productRepository.findById(productId).get();
 
+        assert user != null;
+        if (user.getFavoriteProducts().contains(favoriteProduct)) {
+            return user;
+        }
         user.getFavoriteProducts().add(favoriteProduct);
 
         return repository.save(user);
@@ -109,6 +113,7 @@ public class UserService {
         Product favoriteProduct = productRepository.findById(productId).isEmpty() ? null :
                 productRepository.findById(productId).get();
 
+        assert user != null;
         user.getFavoriteProducts().remove(favoriteProduct);
 
         return repository.save(user);

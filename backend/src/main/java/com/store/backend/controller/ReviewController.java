@@ -1,5 +1,6 @@
 package com.store.backend.controller;
 
+import com.store.backend.dtos.ReviewDto;
 import com.store.backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +13,8 @@ public class ReviewController {
     private ReviewService service;
 
     @PostMapping
-    public void updateProductRating(@RequestBody String userId, @RequestBody String productId, @RequestBody Integer addRating) {
-        service.addReview(userId, productId, addRating);
-        service.updateRating(productId, addRating);
+    public void updateProductRating(@RequestBody ReviewDto reviewDto) {
+        service.addReview(reviewDto.getUserId(), reviewDto.getProductId(), reviewDto.getAddRating());
+        service.updateRating(reviewDto.getProductId(), reviewDto.getAddRating());
     }
 }
